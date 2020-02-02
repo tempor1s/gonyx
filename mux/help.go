@@ -73,11 +73,8 @@ func (m *Mux) Help(ds *discordgo.Session, dm *discordgo.Message, ctx *Context) {
 	}
 
 	resp += "```\n"
-	fmt.Println(resp)
-	fmt.Println(dm.ChannelID)
-	msg, err := ds.ChannelMessageSend(dm.ChannelID, resp)
-	fmt.Println(msg)
-	fmt.Println(err)
+
+	ds.ChannelMessageSend(dm.ChannelID, resp)
 
 	return
 }
