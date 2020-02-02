@@ -1,4 +1,4 @@
-module github.com/tempor1s/goonyx
+module github.com/tempor1s/gonyx
 
 go 1.13
 

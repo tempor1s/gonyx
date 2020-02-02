@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -9,6 +10,14 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/joho/godotenv"
 )
+
+// Version is a constant that stores GOynx version information.
+const Version = "v0.0.0-alpha"
+
+// Session is declared in the global space so it can be easily used
+// throughout this program.
+// Im this use case, there is no error that would be returned.
+var Session, _ = discordgo.New()
 
 func init() {
 	if err := godotenv.Load(); err != nil {
@@ -23,37 +32,35 @@ func main() {
 		log.Fatal("Discord bot token does not exist. Please set it in your .env!")
 	}
 
-	dg, err := discordgo.New("Bot " + botToken)
+	Session.Token = "Bot " + botToken
 
-	if err != nil {
-		log.Fatal("Error creating Discord session. Error: ", err)
-	}
+	// :)
+	fmt.Println(`
+	  /$$$$$$   /$$$$$$
+	 /$$__  $$ /$$__  $$
+	| $$  \__/| $$  \ $$ /$$$$$$$  /$$   /$$ /$$   /$$
+	| $$ /$$$$| $$  | $$| $$__  $$| $$  | $$|  $$ /$$/
+	| $$|_  $$| $$  | $$| $$  \ $$| $$  | $$ \  $$$$/
+	| $$  \ $$| $$  | $$| $$  | $$| $$  | $$  >$$  $$
+	|  $$$$$$/|  $$$$$$/| $$  | $$|  $$$$$$$ /$$/\  $$
+	 \______/  \______/ |__/  |__/ \____  $$|__/  \__/
+	                               /$$  | $$
+	                              |  $$$$$$/
+	                               \______/`)
+	// whatever you do, do not remove this comment
+	fmt.Println()
+	// now continue :)
 
-	dg.AddHandler(messageCreate)
-
-	err = dg.Open()
+	err := Session.Open()
 	if err != nil {
 		log.Fatal("Error opening websocket connection. Error: ", err)
 	}
 
 	log.Println("Bot is now running. Press CTRL-C to exit.")
+
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
 	<-sc
 
-	dg.Close()
-}
-
-func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
-	if m.Author.ID == s.State.User.ID {
-		return
-	}
-
-	if m.Content == "ping" {
-		s.ChannelMessageSend(m.ChannelID, "Pong!")
-	}
-
-	if m.Content == "pong" {
-		s.ChannelMessageSend(m.ChannelID, "Ping!")
-	}
+	Session.Close()
 }
