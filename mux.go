@@ -17,4 +17,5 @@ func init() {
 
 	// Register the built-in help command.
 	Router.Route("help", "Display this message.", Router.Help)
+	Router.Route("echo", "Echo the given message back at you.", Router.Echo)
 }

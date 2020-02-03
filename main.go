@@ -20,6 +20,8 @@ const Version = "v0.0.0-alpha"
 var Session, _ = discordgo.New()
 
 func init() {
+	Session.State.MaxMessageCount = 100
+
 	if err := godotenv.Load(); err != nil {
 		log.Fatal("No .env file found, therefor a discord token was not supplied.")
 	}
