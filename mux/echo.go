@@ -11,5 +11,5 @@ func (m *Mux) Echo(ds *discordgo.Session, dm *discordgo.Message, ctx *Context) {
 		ds.ChannelMessageSend(dm.ChannelID, "Can't trick me with your empty messages :)")
 	}
 
-	ds.ChannelMessageSend(dm.ChannelID, ctx.Content[4:])
+	ds.ChannelMessageSend(dm.ChannelID, ctx.Content[5:])
 }
