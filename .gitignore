@@ -1,5 +1,29 @@
-.DS_Store
-.vscode
-.env
-.idea
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# program binary
 cmd/gonyx/gonyx
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+### Go Patch ###
+/vendor/
+/Godeps/
+
+# Editor Configs
+.vscode
+.idea
+
+# Environment Vars
+.env
+
+# Mac Shit
+.DS_Store
