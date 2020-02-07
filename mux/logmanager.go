@@ -4,7 +4,11 @@ import (
 	"fmt"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/tempor1s/gonyx/logger"
 )
+
+// LoggerInstance is for commands to be able to access the Log for commands
+var LoggerInstance *logger.Logger
 
 // LogManager allows you to manage the logger
 func (m *Mux) LogManager(ds *discordgo.Session, dm *discordgo.Message, ctx *Context) {

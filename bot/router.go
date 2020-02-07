@@ -1,16 +1,15 @@
 package bot
 
 import (
-	"github.com/bwmarrin/discordgo"
 	"github.com/tempor1s/gonyx/mux"
 )
 
 // registerRouter will register all the routes.
-func registerRouter(session *discordgo.Session) *mux.Mux {
+func (b *Bot) registerRouter() {
 	mux := mux.New()
 	// Register the mux OnMessageCreate handler that listens for and processes
 	// all messages received.
-	session.AddHandler(mux.OnMessageCreate)
+	b.Session.AddHandler(mux.OnMessageCreate)
 
 	// Register the built-in help command.
 	mux.Route("help", "Display this message.", mux.Help)
@@ -19,5 +18,5 @@ func registerRouter(session *discordgo.Session) *mux.Mux {
 	mux.Route("xur", "Gives you a nice image of the weekly Xur information.", mux.Xur)
 	mux.Route("weekly", "Gets Destiny 2 weekly information.", mux.Weekly)
 
-	return mux
+	b.Mux = mux
 }

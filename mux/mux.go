@@ -10,11 +10,7 @@ import (
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/tempor1s/gonyx/logger"
 )
-
-// LoggerInstance is for commands to be able to access the logger from commands (mainly used for logmanager.go file)
-var LoggerInstance *logger.Logger
 
 // Route holds information about a specific message route handler
 type Route struct {

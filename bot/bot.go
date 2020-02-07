@@ -32,15 +32,15 @@ func New() *Bot {
 	// Register the handlers
 	bot.registerHandlers()
 	// Set the mux's logger instance to be that of the session
-	mux.LoggerInstance = bot.Logger // TODO: clean this up :(
+	// mux.LoggerInstance = bot.Logger // TODO: clean this up :(
 
 	return &Bot{Session: session}
 }
 
 // registerHandlers registers the different bot handlers
 func (b *Bot) registerHandlers() {
-	b.Mux = registerRouter(b.Session)
-	b.Logger = registerLog(b.Session)
+	b.registerRouter()
+	b.registerLog()
 }
 
 // setToken will set the bots token from the environment

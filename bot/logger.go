@@ -1,17 +1,16 @@
 package bot
 
 import (
-	"github.com/bwmarrin/discordgo"
 	"github.com/tempor1s/gonyx/logger"
 )
 
 // registerLog registers all the logging handlers
-func registerLog(session *discordgo.Session) *logger.Logger {
-	logger := logger.New("536328234556588032")
+func (b *Bot) registerLog() {
+	logger := logger.New("536328234556588032") // TODO: Disabled by default and then configure from db
 
-	session.AddHandler(logger.OnMessageDelete)
-	session.AddHandler(logger.OnMessageCreate)
-	session.AddHandler(logger.OnMessageEdit)
+	b.Session.AddHandler(logger.OnMessageDelete)
+	b.Session.AddHandler(logger.OnMessageCreate)
+	b.Session.AddHandler(logger.OnMessageEdit)
 
-	return logger
+	b.Logger = logger
 }
