@@ -29,6 +29,11 @@ func (l *Logger) OnMessageDelete(ds *discordgo.Session, md *discordgo.MessageDel
 		return
 	}
 
+	// TODO: Create seperate log for bots.
+	if md.Author.Bot {
+		return
+	}
+
 	// TODO: Implement delete logging
 	ds.ChannelMessageSend(l.ChannelID, fmt.Sprintf("Content: %v", md.Content))
 }
@@ -39,6 +44,11 @@ func (l *Logger) OnMessageEdit(ds *discordgo.Session, mu *discordgo.MessageUpdat
 		return
 	}
 
+	// TODO: Create seperate log for bots.
+	if mu.Author.Bot {
+		return
+	}
+
 	msg := fmt.Sprintf("Message Edit: %v -> %v", mu.BeforeUpdate.Content, mu.Content)
 	ds.ChannelMessageSend(l.ChannelID, msg)
 }
@@ -46,6 +56,11 @@ func (l *Logger) OnMessageEdit(ds *discordgo.Session, mu *discordgo.MessageUpdat
 // OnMessageCreate is called whenever a new message is created
 func (l *Logger) OnMessageCreate(ds *discordgo.Session, mc *discordgo.MessageCreate) {
 	if l.LogImages == false {
+		return
+	}
+
+	// TODO: Create seperate log for bots.
+	if mc.Author.Bot {
 		return
 	}
 

@@ -15,7 +15,7 @@ cmd/gonyx/gonyx
 *.out
 
 ### Go Patch ###
-/vendor/
+vendor
 /Godeps/
 
 # Editor Configs

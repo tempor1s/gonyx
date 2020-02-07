@@ -1,14 +1,12 @@
-// Package hooks allows you to hook into different modules,
-// such as the logger and the command handler
-package hooks
+package bot
 
 import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/tempor1s/gonyx/mux"
 )
 
-// RegisterRouter will register new routes.
-func RegisterRouter(session *discordgo.Session) *mux.Mux {
+// registerRouter will register all the routes.
+func registerRouter(session *discordgo.Session) *mux.Mux {
 	mux := mux.New()
 	// Register the mux OnMessageCreate handler that listens for and processes
 	// all messages received.
@@ -18,6 +16,8 @@ func RegisterRouter(session *discordgo.Session) *mux.Mux {
 	mux.Route("help", "Display this message.", mux.Help)
 	mux.Route("echo", "Echo the given message back at you.", mux.Echo)
 	mux.Route("log", "Manage logging functionality.", mux.LogManager)
+	mux.Route("xur", "Gives you a nice image of the weekly Xur information.", mux.Xur)
+	mux.Route("weekly", "Gets Destiny 2 weekly information.", mux.Weekly)
 
 	return mux
 }
