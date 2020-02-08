@@ -6,9 +6,6 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-// HandlerFunc is the function signature required for a message route handler.
-type HandlerFunc func(*discordgo.Session, *discordgo.Message)
-
 // Logger represents a logger struct
 type Logger struct {
 	ChannelID  string

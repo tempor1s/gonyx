@@ -10,13 +10,15 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/tempor1s/gonyx/logger"
 	"github.com/tempor1s/gonyx/mux"
+	"github.com/tempor1s/gonyx/tasks"
 )
 
 // Bot represents everyhing that has to do with the bot. Has different modules, the session, and soon the DB
 type Bot struct {
-	Logger  *logger.Logger
-	Mux     *mux.Mux
-	Session *discordgo.Session
+	Logger     *logger.Logger
+	Mux        *mux.Mux
+	Session    *discordgo.Session
+	WeeklyInfo *tasks.WeeklyInfo
 }
 
 // New creates a new bot instance and session and does some config stuff
@@ -31,6 +33,7 @@ func New() *Bot {
 	bot.setToken()
 	// Register the handlers
 	bot.registerHandlers()
+	// Register all the tasks
 	// Set the mux's logger instance to be that of the session
 	// mux.LoggerInstance = bot.Logger // TODO: clean this up :(
 
@@ -41,6 +44,7 @@ func New() *Bot {
 func (b *Bot) registerHandlers() {
 	b.registerRouter()
 	b.registerLog()
+	b.registerTasks()
 }
 
 // setToken will set the bots token from the environment

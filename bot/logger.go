@@ -1,12 +1,21 @@
 package bot
 
 import (
+	"log"
+	"os"
+
 	"github.com/tempor1s/gonyx/logger"
 )
 
 // registerLog registers all the logging handlers
 func (b *Bot) registerLog() {
-	logger := logger.New("536328234556588032") // TODO: Disabled by default and then configure from db
+	logChannel, exists := os.LookupEnv("LOG_CHANNEL")
+
+	if !exists {
+		log.Println("No log channel supplied.")
+	}
+
+	logger := logger.New(logChannel) // TODO: Disabled by default and then configure from db
 
 	b.Session.AddHandler(logger.OnMessageDelete)
 	b.Session.AddHandler(logger.OnMessageCreate)
