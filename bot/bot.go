@@ -12,7 +12,7 @@ import (
 	"github.com/tempor1s/gonyx/mux"
 )
 
-// Bot struct represents the struct
+// Bot represents everyhing that has to do with the bot. Has different modules, the session, and soon the DB
 type Bot struct {
 	Logger  *logger.Logger
 	Mux     *mux.Mux

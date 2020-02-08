@@ -19,7 +19,7 @@ type Logger struct {
 
 // New creates a new logging instance
 func New(channelID string) *Logger {
-	l := &Logger{ChannelID: channelID, LogDeletes: false, LogEdits: true, LogImages: false}
+	l := &Logger{ChannelID: channelID, LogDeletes: false, LogEdits: false, LogImages: false}
 	return l
 }
 
@@ -30,9 +30,9 @@ func (l *Logger) OnMessageDelete(ds *discordgo.Session, md *discordgo.MessageDel
 	}
 
 	// TODO: Create seperate log for bots.
-	if md.Author.Bot {
-		return
-	}
+	// if md.Author.Bot {
+	// 	return
+	// }
 
 	// TODO: Implement delete logging
 	ds.ChannelMessageSend(l.ChannelID, fmt.Sprintf("Content: %v", md.Content))
@@ -45,9 +45,9 @@ func (l *Logger) OnMessageEdit(ds *discordgo.Session, mu *discordgo.MessageUpdat
 	}
 
 	// TODO: Create seperate log for bots.
-	if mu.Author.Bot {
-		return
-	}
+	// if mu.Author.Bot {
+	// 	return
+	// }
 
 	msg := fmt.Sprintf("Message Edit: %v -> %v", mu.BeforeUpdate.Content, mu.Content)
 	ds.ChannelMessageSend(l.ChannelID, msg)
