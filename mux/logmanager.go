@@ -2,6 +2,7 @@ package mux
 
 import (
 	"fmt"
+	"github.com/tempor1s/gonyx/message"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/tempor1s/gonyx/logger"
@@ -12,10 +13,10 @@ var LoggerInstance *logger.Logger
 
 // LogManager allows you to manage the logger
 func (m *Mux) LogManager(ds *discordgo.Session, dm *discordgo.Message, ctx *Context) {
-	fmt.Printf("Log instance: %v \n", LoggerInstance.ChannelID)
-
 	if len(ctx.Fields) == 1 {
-		ds.ChannelMessageSend(dm.ChannelID, fmt.Sprintf("The current log channel is %s", LoggerInstance.ChannelID))
+		msg := fmt.Sprintf("The current log channel is %s", LoggerInstance.ChannelID)
+		message.SendMessage(ds, dm.ChannelID, msg)
+
 		return
 	}
 
@@ -28,7 +29,8 @@ func (m *Mux) LogManager(ds *discordgo.Session, dm *discordgo.Message, ctx *Cont
 
 func updateLogChannel(ds *discordgo.Session, dm *discordgo.Message, fields []string) {
 	if len(fields) < 3 {
-		ds.ChannelMessageSend(dm.ChannelID, fmt.Sprintf("Please provide a channel ID to update the log channel."))
+		msg := fmt.Sprintf("Please provide a channel ID to update the log channel.")
+		message.SendMessage(ds, dm.ChannelID, msg)
 		return
 	}
 

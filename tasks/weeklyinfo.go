@@ -4,6 +4,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/robfig/cron"
 	"github.com/tempor1s/gonyx/requests"
+	"log"
 )
 
 // WeeklyInfo sets up configuration for weekly info
@@ -22,16 +23,24 @@ func NewWeeklyInfo(channelID string, session *discordgo.Session) *WeeklyInfo {
 
 // RegisterXurInfo registers xur info command
 func (w *WeeklyInfo) RegisterXurInfo() {
-	w.Schedule.AddFunc("@every 5m", func() {
+	err := w.Schedule.AddFunc("@every 5m", func() {
 		// TODO: GoRoutine this
 		requests.GetXurInfo(w.Session, w.ChannelID)
 	})
+
+	if err != nil {
+		log.Println("Did not register Xur Info task.")
+	}
 }
 
 // RegisterWeeklyInfo registers weekly info command
 func (w *WeeklyInfo) RegisterWeeklyInfo() {
-	w.Schedule.AddFunc("@every 5m", func() {
+	err := w.Schedule.AddFunc("@every 5m", func() {
 		// TODO: GoRoutine this
 		requests.GetWeeklyInfo(w.Session, w.ChannelID)
 	})
+
+	if err != nil {
+		log.Println("Did not register Weekly Info task.")
+	}
 }

@@ -2,6 +2,7 @@ package logger
 
 import (
 	"fmt"
+	"github.com/tempor1s/gonyx/message"
 
 	"github.com/bwmarrin/discordgo"
 )
@@ -26,13 +27,13 @@ func (l *Logger) OnMessageDelete(ds *discordgo.Session, md *discordgo.MessageDel
 		return
 	}
 
-	// TODO: Create seperate log for bots.
+	// TODO: Create separate log for bots.
 	// if md.Author.Bot {
 	// 	return
 	// }
 
 	// TODO: Implement delete logging
-	ds.ChannelMessageSend(l.ChannelID, fmt.Sprintf("Content: %v", md.Content))
+	message.SendMessage(ds, l.ChannelID, fmt.Sprintf("Message Deleted: %s", md.Content))
 }
 
 // OnMessageEdit is called whenever a message is edited
@@ -41,13 +42,13 @@ func (l *Logger) OnMessageEdit(ds *discordgo.Session, mu *discordgo.MessageUpdat
 		return
 	}
 
-	// TODO: Create seperate log for bots.
+	// TODO: Create separate log for bots.
 	// if mu.Author.Bot {
 	// 	return
 	// }
 
 	msg := fmt.Sprintf("Message Edit: %v -> %v", mu.BeforeUpdate.Content, mu.Content)
-	ds.ChannelMessageSend(l.ChannelID, msg)
+	message.SendMessage(ds, l.ChannelID, msg)
 }
 
 // OnMessageCreate is called whenever a new message is created
@@ -56,12 +57,12 @@ func (l *Logger) OnMessageCreate(ds *discordgo.Session, mc *discordgo.MessageCre
 		return
 	}
 
-	// TODO: Create seperate log for bots.
+	// TODO: Create separate log for bots.
 	if mc.Author.Bot {
 		return
 	}
 
 	if len(mc.Attachments) > 0 {
-		ds.ChannelMessageSend(l.ChannelID, mc.Attachments[0].URL)
+		message.SendMessage(ds, l.ChannelID, mc.Attachments[0].URL)
 	}
 }

@@ -2,6 +2,7 @@ package mux
 
 import (
 	"fmt"
+	"github.com/tempor1s/gonyx/message"
 	"sort"
 	"strconv"
 
@@ -52,7 +53,6 @@ func (m *Mux) Help(ds *discordgo.Session, dm *discordgo.Message, ctx *Context) {
 
 	sort.Strings(keys)
 
-	// TODO: Learn more link needs to be configurable
 	resp := "\n*Commands can be abbreviated and mixed with other text.  Learn more at <https://github.com/tempor1s/gonyx>*\n"
 	resp += "```autoit\n"
 
@@ -74,7 +74,7 @@ func (m *Mux) Help(ds *discordgo.Session, dm *discordgo.Message, ctx *Context) {
 
 	resp += "```\n"
 
-	ds.ChannelMessageSend(dm.ChannelID, resp)
+	message.SendMessage(ds, dm.ChannelID, resp)
 
 	return
 }

@@ -2,6 +2,8 @@ package requests
 
 import (
 	"fmt"
+	"github.com/tempor1s/gonyx/message"
+	"log"
 	"net/http"
 
 	"github.com/bwmarrin/discordgo"
@@ -10,7 +12,7 @@ import (
 
 // GetXurInfo gets xur information and sends to to the given channel
 func GetXurInfo(session *discordgo.Session, channelID string) {
-	tempMessage, _ := session.ChannelMessageSend(channelID, "Fetching latest info...")
+	tempMessage := message.SendMessage(session, channelID, "Fetching latest info...")
 
 	c := colly.NewCollector()
 	var xurURL string
@@ -19,19 +21,21 @@ func GetXurInfo(session *discordgo.Session, channelID string) {
 		xurURL = e.Attr("data-src")
 	})
 
-	c.Visit("https://www.niris.tv/blog/xurs-wares")
+	if err := c.Visit("https://www.niris.tv/blog/xurs-wares"); err != nil {
+		log.Println("Error occured when scraping Xurs Wares.")
+	}
 
 	// Get the response from the URL
 	resp, err := http.Get(xurURL)
 
 	// Make sure that we get a response so we dont have nil errors.
 	if err != nil {
-		session.ChannelMessageSend(channelID, "Error fetching Xur info. Please try again :)")
+		message.SendMessage(session, channelID, "Error fetching Xur info. Please try again :)")
 	} else {
-		session.ChannelFileSend(channelID, "file.png", resp.Body)
+		message.SendFile(session, channelID, "xur.png", resp.Body)
 	}
 
-	session.ChannelMessageDelete(channelID, tempMessage.ID)
+	message.DeleteMessage(session, channelID, tempMessage.ID)
 }
 
 // GetWeeklyInfo gets weekly information and sends to to the given channel
@@ -39,7 +43,7 @@ func GetWeeklyInfo(session *discordgo.Session, channelID string) {
 	tempMessage, _ := session.ChannelMessageSend(channelID, "Fetching latest info...")
 
 	// TODO: Clean this up
-	// TODO: Set up caching to make this super fast
+	// TODO: Set up caching or logging in database to speed this up most of the time.
 	// Setup web scraper collector and base struct
 	c := colly.NewCollector()
 	var weeklyURL []string
@@ -49,18 +53,21 @@ func GetWeeklyInfo(session *discordgo.Session, channelID string) {
 	})
 
 	// Start the web scraper
-	c.Visit("https://www.niris.tv/blog/weekly-reset")
+	if err := c.Visit("https://www.niris.tv/blog/weekly-reset"); err != nil {
+		log.Println("Error occured when scraping Weekly Reset.")
+	}
 
 	// Send all the URLS :)
 	for _, url := range weeklyURL {
 		resp, err := http.Get(url)
 		// Make sure that we get a response so we dont have nil errors.
 		if err != nil {
-			session.ChannelMessageSend(channelID, fmt.Sprintf("Error fetching weekly info from `%s` Please try again :)", url))
+			msg := fmt.Sprintf("Error fetching weekly info from `%s` Please try again :)", url)
+			message.SendMessage(session, channelID, msg)
 		} else {
-			session.ChannelFileSend(channelID, "file.png", resp.Body)
+			message.SendFile(session, channelID,"weekly.png", resp.Body)
 		}
 	}
 
-	session.ChannelMessageDelete(channelID, tempMessage.ID)
+	message.DeleteMessage(session, channelID, tempMessage.ID)
 }
