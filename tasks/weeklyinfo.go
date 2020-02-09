@@ -18,14 +18,17 @@ type WeeklyInfo struct {
 // NewWeeklyInfo creates a new weekly info loop
 func NewWeeklyInfo(channelID string, session *discordgo.Session) *WeeklyInfo {
 	c := cron.New()
-	return &WeeklyInfo{ChannelID: channelID, Enabled: true, Schedule: c, Session: session}
+	return &WeeklyInfo{ChannelID: channelID, Enabled: false, Schedule: c, Session: session}
 }
 
 // RegisterXurInfo registers xur info command
 func (w *WeeklyInfo) RegisterXurInfo() {
+
 	err := w.Schedule.AddFunc("@every 5m", func() {
 		// TODO: GoRoutine this
-		requests.GetXurInfo(w.Session, w.ChannelID)
+		if w.Enabled {
+			requests.GetXurInfo(w.Session, w.ChannelID)
+		}
 	})
 
 	if err != nil {
@@ -35,9 +38,12 @@ func (w *WeeklyInfo) RegisterXurInfo() {
 
 // RegisterWeeklyInfo registers weekly info command
 func (w *WeeklyInfo) RegisterWeeklyInfo() {
+
 	err := w.Schedule.AddFunc("@every 5m", func() {
 		// TODO: GoRoutine this
-		requests.GetWeeklyInfo(w.Session, w.ChannelID)
+		if w.Enabled {
+			requests.GetWeeklyInfo(w.Session, w.ChannelID)
+		}
 	})
 
 	if err != nil {

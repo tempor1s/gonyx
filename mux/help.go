@@ -53,8 +53,7 @@ func (m *Mux) Help(ds *discordgo.Session, dm *discordgo.Message, ctx *Context) {
 
 	sort.Strings(keys)
 
-	resp := "\n*Commands can be abbreviated and mixed with other text.  Learn more at <https://github.com/tempor1s/gonyx>*\n"
-	resp += "```autoit\n"
+	resp := "```"
 
 	v, ok := cmdmap["help"]
 	if ok {
@@ -72,9 +71,14 @@ func (m *Mux) Help(ds *discordgo.Session, dm *discordgo.Message, ctx *Context) {
 		resp += fmt.Sprintf("%s%-"+strconv.Itoa(maxlen)+"s # %s\n", cp, v.Pattern+v.Help, v.Description)
 	}
 
-	resp += "```\n"
+	resp += "```"
 
-	message.SendMessage(ds, dm.ChannelID, resp)
+	embed := message.GetDefaultEmbed()
+	embed.Title = "\n*Help - Commands can be abbreviated and mixed with other text.*\n"
+	embed.Description = resp
+
+	message.SendEmbed(ds, dm.ChannelID, embed)
+	//message.SendMessage(ds, dm.ChannelID, resp)
 
 	return
 }

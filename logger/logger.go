@@ -33,7 +33,11 @@ func (l *Logger) OnMessageDelete(ds *discordgo.Session, md *discordgo.MessageDel
 	// }
 
 	// TODO: Implement delete logging
-	message.SendMessage(ds, l.ChannelID, fmt.Sprintf("Message Deleted: %s", md.Content))
+	embed := message.GetDefaultEmbed()
+	embed.Title = "Message Deleted"
+	embed.Description = fmt.Sprintf("Message Deleted: %s", md.Content)
+
+	message.SendEmbed(ds, l.ChannelID, embed)
 }
 
 // OnMessageEdit is called whenever a message is edited
@@ -47,8 +51,11 @@ func (l *Logger) OnMessageEdit(ds *discordgo.Session, mu *discordgo.MessageUpdat
 	// 	return
 	// }
 
-	msg := fmt.Sprintf("Message Edit: %v -> %v", mu.BeforeUpdate.Content, mu.Content)
-	message.SendMessage(ds, l.ChannelID, msg)
+	embed := message.GetDefaultEmbed()
+	embed.Title = "Message Edited"
+	embed.Description = fmt.Sprintf("Message Edit: %v -> %v", mu.BeforeUpdate.Content, mu.Content)
+
+	message.SendEmbed(ds, l.ChannelID, embed)
 }
 
 // OnMessageCreate is called whenever a new message is created

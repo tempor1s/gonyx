@@ -13,7 +13,7 @@ import (
 	"github.com/tempor1s/gonyx/tasks"
 )
 
-// Bot represents everyhing that has to do with the bot. Has different modules, the session, and soon the DB
+// Bot represents everything that has to do with the bot. Has different modules, the session, and soon the DB
 type Bot struct {
 	Logger     *logger.Logger
 	Mux        *mux.Mux
@@ -31,11 +31,10 @@ func New() *Bot {
 	bot := &Bot{Session: session}
 	// Set the bots token
 	bot.setToken()
-	// Register the handlers
+	// Register the handlers and tasks
 	bot.registerHandlers()
-	// Register all the tasks
-	// Set the mux's logger instance to be that of the session
-	// mux.LoggerInstance = bot.Logger // TODO: clean this up :(
+	// Set the Mux's logger instance to be that of the session
+	mux.LoggerInstance = bot.Logger // TODO: clean this up :(
 
 	return &Bot{Session: session}
 }
