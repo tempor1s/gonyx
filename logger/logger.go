@@ -2,22 +2,30 @@ package logger
 
 import (
 	"fmt"
-	"github.com/tempor1s/gonyx/message"
-
 	"github.com/bwmarrin/discordgo"
+	"github.com/tempor1s/gonyx/message"
+	"log"
 )
 
 // Logger represents a logger struct
 type Logger struct {
 	ChannelID  string
+	Channel *discordgo.Channel
 	LogDeletes bool
 	LogEdits   bool
 	LogImages  bool
 }
 
 // New creates a new logging instance
-func New(channelID string) *Logger {
-	l := &Logger{ChannelID: channelID, LogDeletes: false, LogEdits: false, LogImages: false}
+func New(channelID string, session *discordgo.Session) *Logger {
+
+	l := &Logger{
+		ChannelID: channelID,
+		LogDeletes: false,
+		LogEdits: false,
+		LogImages: false,
+	}
+
 	return l
 }
 
@@ -28,9 +36,12 @@ func (l *Logger) OnMessageDelete(ds *discordgo.Session, md *discordgo.MessageDel
 	}
 
 	// TODO: Create separate log for bots.
-	// if md.Author.Bot {
-	// 	return
-	// }
+	if md.Author.ID == ds.State.User.ID {
+		return
+	}
+
+	log.Printf("%+v", md)
+	log.Printf("%+v", md.Message)
 
 	// TODO: Implement delete logging
 	embed := message.GetDefaultEmbed()
@@ -46,14 +57,41 @@ func (l *Logger) OnMessageEdit(ds *discordgo.Session, mu *discordgo.MessageUpdat
 		return
 	}
 
-	// TODO: Create separate log for bots.
-	// if mu.Author.Bot {
-	// 	return
-	// }
+	// Get the message because fuck discord API
+	msg, err := ds.ChannelMessage(mu.Message.ChannelID, mu.Message.ID)
+
+	if err != nil {
+		log.Printf("Error: %v", err)
+	}
+
+	if msg.Author.ID == ds.State.User.ID {
+		return
+	}
+
+	log.Printf("message: %+v\n", mu)
 
 	embed := message.GetDefaultEmbed()
 	embed.Title = "Message Edited"
-	embed.Description = fmt.Sprintf("Message Edit: %v -> %v", mu.BeforeUpdate.Content, mu.Content)
+	embed.Fields = []*discordgo.MessageEmbedField{
+		{
+			Name:   "Before",
+			Value:  mu.BeforeUpdate.Content,
+			Inline: false,
+		},
+		{
+			Name: "After",
+			Value: mu.Content,
+		},
+		{
+			 Name: "Message ID",
+			 Value: mu.ID,
+		},
+		{
+			Name: "Channel ID",
+			Value: msg.ChannelID,
+		},
+	}
+	//embed.Description = fmt.Sprintf("Message Edit: %v -> %v", mu.BeforeUpdate.Content, mu.Content)
 
 	message.SendEmbed(ds, l.ChannelID, embed)
 }
@@ -65,7 +103,7 @@ func (l *Logger) OnMessageCreate(ds *discordgo.Session, mc *discordgo.MessageCre
 	}
 
 	// TODO: Create separate log for bots.
-	if mc.Author.Bot {
+	if mc.Author.ID == ds.State.User.ID {
 		return
 	}
 

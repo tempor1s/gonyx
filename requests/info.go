@@ -22,7 +22,7 @@ func GetXurInfo(session *discordgo.Session, channelID string) {
 	})
 
 	if err := c.Visit("https://www.niris.tv/blog/xurs-wares"); err != nil {
-		log.Println("Error occured when scraping Xurs Wares.")
+		log.Println("Error occurred when scraping Xur's Wares.")
 	}
 
 	// Get the response from the URL
@@ -54,7 +54,7 @@ func GetWeeklyInfo(session *discordgo.Session, channelID string) {
 
 	// Start the web scraper
 	if err := c.Visit("https://www.niris.tv/blog/weekly-reset"); err != nil {
-		log.Println("Error occured when scraping Weekly Reset.")
+		log.Println("Error occurred when scraping Weekly Reset.")
 	}
 
 	// Send all the URLS :)

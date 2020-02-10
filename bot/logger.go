@@ -15,11 +15,11 @@ func (b *Bot) registerLog() {
 		log.Println("No log channel supplied.")
 	}
 
-	logger := logger.New(logChannel) // TODO: Disabled by default and then configure from db
+	logInstance := logger.New(logChannel, b.Session) // TODO: Disabled by default and then configure from db
 
-	b.Session.AddHandler(logger.OnMessageDelete)
-	b.Session.AddHandler(logger.OnMessageCreate)
-	b.Session.AddHandler(logger.OnMessageEdit)
+	b.Session.AddHandler(logInstance.OnMessageDelete)
+	b.Session.AddHandler(logInstance.OnMessageCreate)
+	b.Session.AddHandler(logInstance.OnMessageEdit)
 
-	b.Logger = logger
+	b.Logger = logInstance
 }
