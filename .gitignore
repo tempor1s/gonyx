@@ -5,8 +5,9 @@
 *.so
 *.dylib
 
-# program binary
+# program binaries
 cmd/gonyx/gonyx
+main
 
 # Test binary, built with `go test -c`
 *.test

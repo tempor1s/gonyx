@@ -1,8 +1,6 @@
 package main
 
 import (
-	"log"
-
 	"github.com/joho/godotenv"
 	"github.com/tempor1s/gonyx/bot"
 )
@@ -12,9 +10,7 @@ const Version = "v0.0.0-alpha"
 
 func init() {
 	// Initalize environment variables
-	if err := godotenv.Load(); err != nil {
-		log.Fatal("No .env file found, therefor a discord token was not supplied.")
-	}
+	_ = godotenv.Load()
 }
 
 func main() {

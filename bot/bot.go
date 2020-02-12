@@ -65,7 +65,7 @@ func (b *Bot) Start() {
 		log.Fatal("Error opening websocket connection. Error: ", err)
 	}
 
-	printASCIIArt()
+	//printASCIIArt()
 
 	log.Println("Bot is now running. Press CTRL-C to exit.")
 }
@@ -77,7 +77,9 @@ func (b *Bot) AwaitTermination() {
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
 	<-sc
 
-	b.Session.Close()
+	if err := b.Session.Close(); err != nil {
+		log.Fatal(err)
+	}
 }
 
 // for fun ascii art :)
