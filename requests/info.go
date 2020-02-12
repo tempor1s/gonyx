@@ -3,8 +3,10 @@ package requests
 import (
 	"fmt"
 	"github.com/tempor1s/gonyx/message"
+	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/gocolly/colly"
@@ -70,4 +72,45 @@ func GetWeeklyInfo(session *discordgo.Session, channelID string) {
 	}
 
 	message.DeleteMessage(session, channelID, tempMessage.ID)
+}
+
+func CompareURL(fileName, url string) bool {
+	byteURL := []byte(url)
+
+	if fileExists(fileName) == false {
+		writeURL(fileName, byteURL)
+		return false
+	}
+
+	fileContent, err := ioutil.ReadFile(fileName)
+
+	if err != nil {
+		log.Printf("Error when reading file. Error: %v", err)
+	}
+
+	if string(byteURL) == string(fileContent) {
+		log.Println("Same URL. Continuing...")
+		return true
+	}
+
+	return false
+}
+
+func writeURL(fileName string, url []byte) {
+	byteURL := []byte(url)
+
+	if err := ioutil.WriteFile(fileName, byteURL, 0666); err != nil {
+		log.Printf("Could not not write URL to file. Error: %v\n", err)
+	}
+
+	log.Printf("Successfully wrote URL to file %q\n", fileName)
+}
+
+func fileExists(filename string) bool {
+	info, err := os.Stat(filename)
+	if os.IsNotExist(err) {
+		return false
+	}
+
+	return !info.IsDir()
 }

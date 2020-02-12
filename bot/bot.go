@@ -35,6 +35,7 @@ func New() *Bot {
 	bot.registerHandlers()
 	// Set the Mux's logger instance to be that of the session
 	mux.LoggerInstance = bot.Logger // TODO: clean this up :(
+	mux.WeeklyInstance = bot.WeeklyInfo // TODO: clean this up :(
 
 	return &Bot{Session: session}
 }

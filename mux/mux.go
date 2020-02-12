@@ -110,6 +110,11 @@ func (m *Mux) OnMessageCreate(ds *discordgo.Session, mc *discordgo.MessageCreate
 		return
 	}
 
+	// Ignore messages not created by me :) TODO: Figure out permissions for certain commands
+	if mc.Author.ID != "111901076520767488" {
+		return
+	}
+
 	// Create Context struct that we can put various infos into
 	ctx := &Context{
 		Content: strings.TrimSpace(mc.Content),

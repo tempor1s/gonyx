@@ -1,10 +1,10 @@
 package mux
 
 import (
-"fmt"
-"github.com/bwmarrin/discordgo"
-"github.com/tempor1s/gonyx/logger"
-"github.com/tempor1s/gonyx/message"
+	"fmt"
+	"github.com/bwmarrin/discordgo"
+	"github.com/tempor1s/gonyx/logger"
+	"github.com/tempor1s/gonyx/message"
 )
 
 // LoggerInstance is for commands to be able to access the Log for commands
