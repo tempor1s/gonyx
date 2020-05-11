@@ -2,6 +2,7 @@ package mux
 
 import (
 	"fmt"
+
 	"github.com/bwmarrin/discordgo"
 	"github.com/tempor1s/gonyx/logger"
 	"github.com/tempor1s/gonyx/message"

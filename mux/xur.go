@@ -8,5 +8,5 @@ import (
 // Xur returns where xur is in the current week
 func (m *Mux) Xur(ds *discordgo.Session, dm *discordgo.Message, ctx *Context) {
 	// TODO: GoRoutine this
-	requests.GetXurInfo(ds, dm.ChannelID)
+	requests.GetXurInfo(ds, dm.ChannelID, false)
 }

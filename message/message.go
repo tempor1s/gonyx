@@ -2,9 +2,10 @@
 package message
 
 import (
-	"github.com/bwmarrin/discordgo"
 	"io"
 	"log"
+
+	"github.com/bwmarrin/discordgo"
 )
 
 func SendMessage(session *discordgo.Session, channelID, content string) *discordgo.Message {
@@ -18,7 +19,7 @@ func SendMessage(session *discordgo.Session, channelID, content string) *discord
 }
 
 func SendFile(session *discordgo.Session, channelID, fileName string, reader io.Reader) *discordgo.Message {
-	msg, err := session.ChannelFileSend(channelID, "file.png", reader)
+	msg, err := session.ChannelFileSend(channelID, fileName, reader)
 
 	if err != nil {
 		log.Printf("Error sending file in %q. Error: %v", channelID, err)
@@ -32,5 +33,22 @@ func DeleteMessage(session *discordgo.Session, channelID, messageID string) {
 
 	if err != nil {
 		log.Printf("Error deleting message in %q. Error: %v", channelID, err)
+	}
+}
+
+func DeleteMessagesWithAttachment(session *discordgo.Session, channelID, fileName string) {
+	messages, err := session.ChannelMessages(channelID, 10, "", "", "")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, msg := range messages {
+		attachments := msg.Attachments
+		if len(attachments) > 0 {
+			if attachments[0].Filename == fileName {
+				DeleteMessage(session, channelID, msg.ID)
+			}
+		}
 	}
 }

@@ -4,7 +4,7 @@ FROM golang:alpine
 WORKDIR /app
 
 # Copy code into container
-COPY ./ /app
+COPY . /app
 
 # Download deps and package required for hit reload
 RUN go mod download

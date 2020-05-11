@@ -30,5 +30,8 @@ vendor
 .DS_Store
 
 # Custom program stuff.
-xur_info.txt
-weekly_info.txt
+xur.txt
+weekly.txt
+
+# Postgres lol
+.postgres

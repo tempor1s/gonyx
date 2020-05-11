@@ -1,10 +1,11 @@
 package tasks
 
 import (
+	"log"
+
 	"github.com/bwmarrin/discordgo"
 	"github.com/robfig/cron"
 	"github.com/tempor1s/gonyx/requests"
-	"log"
 )
 
 // WeeklyInfo sets up configuration for weekly info
@@ -24,10 +25,10 @@ func NewWeeklyInfo(channelID string, session *discordgo.Session) *WeeklyInfo {
 // RegisterXurInfo registers xur info command
 func (w *WeeklyInfo) RegisterXurInfo() {
 
-	err := w.Schedule.AddFunc("@every 5m", func() {
+	err := w.Schedule.AddFunc("@every 1m", func() {
 		// TODO: GoRoutine this
 		if w.Enabled {
-			requests.GetXurInfo(w.Session, w.ChannelID)
+			requests.GetXurInfo(w.Session, w.ChannelID, true)
 		}
 	})
 
@@ -39,10 +40,10 @@ func (w *WeeklyInfo) RegisterXurInfo() {
 // RegisterWeeklyInfo registers weekly info command
 func (w *WeeklyInfo) RegisterWeeklyInfo() {
 
-	err := w.Schedule.AddFunc("@every 5m", func() {
+	err := w.Schedule.AddFunc("@every 1m", func() {
 		// TODO: GoRoutine this
 		if w.Enabled {
-			requests.GetWeeklyInfo(w.Session, w.ChannelID)
+			requests.GetWeeklyInfo(w.Session, w.ChannelID, true)
 		}
 	})
 

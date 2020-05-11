@@ -19,6 +19,7 @@ type Bot struct {
 	Mux        *mux.Mux
 	Session    *discordgo.Session
 	WeeklyInfo *tasks.WeeklyInfo
+	Database   string
 }
 
 // New creates a new bot instance and session and does some config stuff
@@ -33,8 +34,10 @@ func New() *Bot {
 	bot.setToken()
 	// Register the handlers and tasks
 	bot.registerHandlers()
+	// Create a new DB instance
+	// bot.Database = db.GetDBCredentials()
 	// Set the Mux's logger instance to be that of the session
-	mux.LoggerInstance = bot.Logger // TODO: clean this up :(
+	mux.LoggerInstance = bot.Logger     // TODO: clean this up :(
 	mux.WeeklyInstance = bot.WeeklyInfo // TODO: clean this up :(
 
 	return &Bot{Session: session}
