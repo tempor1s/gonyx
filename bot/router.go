@@ -22,6 +22,7 @@ func (b *Bot) registerRouter() {
 	mux.Route("xur", "Gives you a nice image of the weekly Xur information.", mux.Xur)
 	mux.Route("weekly", "Gets Destiny 2 weekly information.", mux.Weekly)
 	mux.Route("tasks", "Manage tasks.", mux.TaskManager)
+	mux.Route("trials", "Gets Destiny 2 weekly trials information.", mux.Trials)
 
 	b.Mux = mux
 }

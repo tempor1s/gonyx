@@ -105,6 +105,48 @@ func GetWeeklyInfo(session *discordgo.Session, channelID string, task bool) {
 	}
 }
 
+func GetTrialsInfo(session *discordgo.Session, channelID string, task bool) {
+	if task == false {
+		tempMessage, _ := session.ChannelMessageSend(channelID, "Fetching latest info...")
+		defer message.DeleteMessage(session, channelID, tempMessage.ID)
+	}
+
+	c := colly.NewCollector()
+	var trialsURL []string
+
+	c.OnHTML("img", func(e *colly.HTMLElement) {
+		trialsURL = append(trialsURL, e.Attr("data-src"))
+	})
+
+	if err := c.Visit("https://www.niris.tv/blog/trials"); err != nil {
+		log.Println("Error occurred when scraping trials info")
+	}
+
+	var sameUrl bool
+	if task {
+		sameUrl = CompareUrls("trials.txt", trialsURL)
+	} else {
+		sameUrl = false
+	}
+
+	if sameUrl == false && task {
+		message.DeleteMessagesWithAttachment(session, channelID, "trials.png")
+	}
+
+	// Get the response from the URL
+	resp, err := http.Get(trialsURL[0])
+
+	// Make sure that we get a response so we dont have nil errors.
+	if err != nil {
+		message.SendMessage(session, channelID, "Error fetching Xur info. Please try again :)")
+		return
+	}
+
+	if sameUrl == false {
+		message.SendFile(session, channelID, "trials.png", resp.Body)
+	}
+}
+
 func CompareUrls(fileName string, urls []string) bool {
 	if fileExists(fileName) == false {
 		writeLinks(fileName, urls)

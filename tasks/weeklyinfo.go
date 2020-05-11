@@ -51,3 +51,15 @@ func (w *WeeklyInfo) RegisterWeeklyInfo() {
 		log.Println("Did not register Weekly Info task.")
 	}
 }
+
+func (w WeeklyInfo) RegisterTrialsInfo() {
+	err := w.Schedule.AddFunc("@every 5m", func() {
+		if w.Enabled {
+			requests.GetTrialsInfo(w.Session, w.ChannelID, true)
+		}
+	})
+
+	if err != nil {
+		log.Println("Did not register Trials Info task.")
+	}
+}

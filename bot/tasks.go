@@ -20,6 +20,8 @@ func (b *Bot) registerTasks() {
 	weeklyInfo.RegisterXurInfo()
 	// Register weekly info
 	weeklyInfo.RegisterWeeklyInfo()
+	// Register trials info
+	weeklyInfo.RegisterTrialsInfo()
 
 	// Start all the registered tasks
 	weeklyInfo.Schedule.Start()
