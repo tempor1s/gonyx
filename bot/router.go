@@ -1,11 +1,15 @@
 package bot
 
 import (
+	"fmt"
+
 	"github.com/tempor1s/gonyx/mux"
 )
 
 // registerRouter will register all the routes.
 func (b *Bot) registerRouter() {
+	fmt.Println("Registering router...")
+
 	mux := mux.New()
 	// Register the mux OnMessageCreate handler that listens for and processes
 	// all messages received.

@@ -32,7 +32,7 @@ func New() *Bot {
 	bot := &Bot{Session: session}
 	// Set the bots token
 	bot.setToken()
-	// Register the handlers and tasks
+	// Register the handlers, tasks, and other misc events
 	bot.registerHandlers()
 	// Create a new DB instance
 	// bot.Database = db.GetDBCredentials()
@@ -48,6 +48,7 @@ func (b *Bot) registerHandlers() {
 	b.registerRouter()
 	b.registerLog()
 	b.registerTasks()
+	b.registerEvents()
 }
 
 // setToken will set the bots token from the environment
