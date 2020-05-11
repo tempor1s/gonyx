@@ -37,8 +37,8 @@ func New() *Bot {
 	// Create a new DB instance
 	// bot.Database = db.GetDBCredentials()
 	// Set the Mux's logger instance to be that of the session
-	mux.LoggerInstance = bot.Logger     // TODO: clean this up :(
-	mux.WeeklyInstance = bot.WeeklyInfo // TODO: clean this up :(
+	mux.LoggerInstance = bot.Logger
+	mux.WeeklyInstance = bot.WeeklyInfo
 
 	return &Bot{Session: session}
 }
@@ -64,12 +64,12 @@ func (b *Bot) setToken() {
 
 // Start will open the connection to discord and check for any errors and such :)
 func (b *Bot) Start() {
+	printASCIIArt()
+
 	err := b.Session.Open()
 	if err != nil {
 		log.Fatal("Error opening websocket connection. Error: ", err)
 	}
-
-	//printASCIIArt()
 
 	log.Println("Bot is now running. Press CTRL-C to exit.")
 }
