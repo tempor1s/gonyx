@@ -11,4 +11,4 @@ RUN go mod download
 RUN go get github.com/githubnemo/CompileDaemon
 
 # Build app and run :)
-ENTRYPOINT CompileDaemon --build="go build cmd/gonyx/main.go" --command=./main -log-prefix=false
+ENTRYPOINT CompileDaemon --build="go build main.go" --command=./main -log-prefix=false
