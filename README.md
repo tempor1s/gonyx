@@ -6,7 +6,7 @@ A simple bot that is used to display weekly information for Destiny 2 in a chann
 
 ## Getting Started
 
-Install docker. Easiest way on mac is to `brew install docker`
+Install docker.
 
 Once you have docker installed and running, you need to rename `.env.example` to `.env` and fill out the blank variables.
 
